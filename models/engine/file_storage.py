@@ -62,5 +62,4 @@ class FileStorage:
             return
 
         else:
-            obj_key = f"{obj.__class__.__name__}.{obj.id}"
-            del(FileStorage.__objects[obj_key])
+            del(FileStorage.__objects[f"{obj.__class__.__name__}.{obj.id}"])
