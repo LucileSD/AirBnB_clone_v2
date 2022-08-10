@@ -65,4 +65,4 @@ class Place(BaseModel, Base):
         def amenities(self, val):
             print(f"val = {val}")
             if val.__class__.__name__ == "Amenity":
-                self.amenity_ids.append(Amenity.id)
+                self.amenity_ids.append(val.id)
