@@ -14,8 +14,7 @@ place_amenity = Table("place_amenity", Base.metadata,
                              nullable=False, primary_key=True),
                       Column("amenity_id", String(60),
                              ForeignKey("amenities.id"),
-                             nullable=False, primary_key=True)
-                      )
+                             nullable=False, primary_key=True))
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -33,33 +32,37 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
-    reviews = relationship("Review", backref="place", cascade="all, delete", passive_deletes=True)
-    amenities = relationship("Amenity", viewonly=False, secondary=place_amenity, back_populates='place_amenities')
 
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        reviews = relationship("Review", backref="place", cascade="all, delete", passive_deletes=True)
 
-    @property
-    def reviews(self):
-        """returns the list of Review"""
-        new_list = []
-        all_review = models.storage.all(Review)
-        for element in all_review.values():
-            if self.id == element.place_id:
-                new_list.append(element)
-        return new_list
+    else:
+        @property
+        def reviews(self):
+            """returns the list of Review"""
+            new_list = []
+            all_review = models.storage.all(Review)
+            for element in all_review.values():
+                if self.id == element.place_id:
+                    new_list.append(element)
+            return new_list
 
-        
-    @property
-    def amenities(self):
-        """returns the list of amenities
-        """
-        new_list = []
-        all_ami = models.storage.all(Amenity)
-        for element in all_ami.values():
-            if self.id == element.amenity_ids:
-                new_list.append(element)
-        return new_list
-        
-    @amenities.setter
-    def amenities(self, val):
-        if type(val) == "Amenity":
-            self.amenity_ids.append(val.id)
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        amenities = relationship("Amenity", viewonly=False, secondary=place_amenity, backref='place_amenities')
+
+    else:
+        @property
+        def amenities(self):
+            """returns the list of amenities
+            """
+            new_list = []
+            all_ami = models.storage.all(Amenity)
+            for element in all_ami.values():
+                if self.id == element.amenity_ids:
+                    new_list.append(element)
+            return new_list
+            
+        @amenities.setter
+        def amenities(self, val):
+            if type(val) == "Amenity":
+                self.amenity_ids.append(val.id)
