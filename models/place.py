@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
+from models.review import Review
+from models.amenity import Amenity
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from os import getenv
 from sqlalchemy.orm import relationship
-import models
+from models import storage
 
 place_amenity = Table("place_amenity", Base.metadata,
                       Column("place_id", String(60),
@@ -39,14 +41,14 @@ class Place(BaseModel, Base):
         def reviews(self):
             """returns the list of Review"""
             new_list = []
-            all_review = models.storage.all('Review')
+            all_review = storage.all(Review)
             for element in all_review.values():
                 if self.id == element.place_id:
                     new_list.append(element)
             return new_list
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        amenities = relationship("Amenity", viewonly=False, secondary=place_amenity, back_populates="place_amenities")
+        amenities = relationship("Amenity", viewonly=False, secondary=place_amenity, backref="place_amenities")
 
     else:
         @property
@@ -54,13 +56,14 @@ class Place(BaseModel, Base):
             """returns the list of amenities
             """
             new_list = []
-            all_ami = models.storage.all('Amenity')
+            all_ami = storage.all(Amenity)
             for element in all_ami.values():
-                if self.id == element.amenity_ids:
+                if self.id == element.place_id:
                     new_list.append(element)
             return new_list
             
         @amenities.setter
-        def amenities(self, val):
-            if type(val) == "Amenity":
-                self.amenity_ids.append(val.id)
+        def amenities(self, cls):
+            if not isinstance(cls, Amenity):
+                return
+            self.amenity_ids.append(cls.id)

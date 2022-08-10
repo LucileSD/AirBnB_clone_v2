@@ -2,13 +2,6 @@
 """class file DBStorage"""
 
 from os import getenv
-from models.base_model import Base
-from models.amenity import Amenity
-from models.city import City
-from models.place import Place
-from models.review import Review
-from models.user import User
-from models.state import State
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
@@ -31,10 +24,18 @@ class DBStorage():
         ))
 
         if getenv("HBNB_ENV") == "test":
+            from models.base_model import Base
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """retrives all objects of a class name"""
+        from models.base_model import Base
+        from models.amenity import Amenity
+        from models.city import City
+        from models.place import Place
+        from models.review import Review
+        from models.user import User
+        from models.state import State
         new_dict = {}
         all_class = [City, State, User, Place, Review, Amenity]
         list_objects = []
@@ -66,6 +67,13 @@ class DBStorage():
     def reload(self):
         """create all tables in the database and the current
            database session"""
+        from models.base_model import Base
+        from models.amenity import Amenity
+        from models.city import City
+        from models.place import Place
+        from models.review import Review
+        from models.user import User
+        from models.state import State
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
