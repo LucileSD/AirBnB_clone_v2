@@ -10,11 +10,11 @@ import models
 
 place_amenity = Table("place_amenity", Base.metadata,
                       Column("place_id", String(60),
-                      ForeignKey("places.id"),
-                      nullable=False, primary_key=True),
+                             ForeignKey("places.id"),
+                             nullable=False, primary_key=True),
                       Column("amenity_id", String(60),
-                      ForeignKey("amenities.id"),
-                      nullable=False, primary_key=True)
+                             ForeignKey("amenities.id"),
+                             nullable=False, primary_key=True)
                       )
 
 class Place(BaseModel, Base):
@@ -64,5 +64,5 @@ class Place(BaseModel, Base):
         @amenities.setter
         def amenities(self, val):
             print(f"val = {val}")
-            if val.__class__.__name__ == "Amenity":
+            if type(val) == "Amenity":
                 self.amenity_ids.append(val.id)
