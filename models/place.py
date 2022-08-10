@@ -33,35 +33,33 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+    reviews = relationship("Review", backref="place", cascade="all, delete", passive_deletes=True)
+    amenities = relationship("Amenity", viewonly=False, secondary=place_amenity, back_populates='place_amenities')
 
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship("Review", backref="place", cascade="all, delete", passive_deletes=True)
-    else:
-        @property
-        def reviews(self):
-            """returns the list of Review"""
-            new_list = []
-            all_review = models.storage.all(Review)
-            for element in all_review.values():
-                if self.id == element.place_id:
-                    new_list.append(element)
-            return new_list
 
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        amenities = relationship("Amenity", viewonly=False, secondary=place_amenity, back_populates='place_amenities')
-    else:
-        @property
-        def amenities(self):
-            """returns the list of amenities
-            """
-            new_list = []
-            all_ami = models.storage.all(Amenity)
-            for element in all_ami.values():
-                if self.id == element.amenity_ids:
-                    new_list.append(element)
-            return new_list
+    @property
+    def reviews(self):
+        """returns the list of Review"""
+        new_list = []
+        all_review = models.storage.all(Review)
+        for element in all_review.values():
+            if self.id == element.place_id:
+                new_list.append(element)
+        return new_list
+
         
-        @amenities.setter
-        def amenities(self, val):
-            if type(val) == "Amenity":
-                self.amenity_ids.append(val.id)
+    @property
+    def amenities(self):
+        """returns the list of amenities
+        """
+        new_list = []
+        all_ami = models.storage.all(Amenity)
+        for element in all_ami.values():
+            if self.id == element.amenity_ids:
+                new_list.append(element)
+        return new_list
+        
+    @amenities.setter
+    def amenities(self, val):
+        if type(val) == "Amenity":
+            self.amenity_ids.append(val.id)

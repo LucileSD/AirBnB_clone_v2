@@ -16,7 +16,7 @@ else:
 
 class BaseModel:
     """A base class for all hbnb models"""
-    id = Column(String(60), unique=True, primary_key=True, nullable=False)
+    id = Column(String(60), unique=True, primary_key=True, nullable=False, autoincrement=True)
     created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
@@ -49,12 +49,12 @@ class BaseModel:
         """Convert instance into dict format"""
         dictionary = {}
         dictionary.update(self.__dict__)
-        if "_sa_instance_state" in dictionary:
-            del dictionary["_sa_instance_state"]
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        if "_sa_instance_state" in dictionary.keys():
+            del dictionary["_sa_instance_state"]
         return dictionary
 
     def delete(self):
