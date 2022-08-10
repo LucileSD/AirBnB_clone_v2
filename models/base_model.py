@@ -20,18 +20,30 @@ class BaseModel:
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
-        self.updated_at = datetime.now()
-
-        if len(kwargs) != 0:
-            for keys, values in kwargs.items():
-                if keys in ['created_at', 'updated_at']:
-                    values = datetime.strptime(values, "%Y-%m-%dT%H:%M:%S.%f")
-                if keys != '__class__':
-                    setattr(self, keys, values)
-        else:
+        """
+        Instantiates a new model
+        """
+        if not kwargs:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+        else:
+            for key, value in kwargs.items():
+                if key != "__class__":
+                    setattr(self, key, value)
+
+            if "id" not in kwargs:
+                self.id = str(uuid.uuid4())
+            if "created_at" not in kwargs:
+                self.created_at = datetime.now()
+            else:
+                self.created_at = datetime.strptime(kwargs['created_at'],
+                                                    '%Y-%m-%dT%H:%M:%S.%f')
+            if "updated_at" not in kwargs:
+                self.updated_at = datetime.now()
+            else:
+                self.updated_at = datetime.strptime(kwargs['updated_at'],
+                                                    '%Y-%m-%dT%H:%M:%S.%f')
 
     def __str__(self):
         """Returns a string representation of the instance"""
