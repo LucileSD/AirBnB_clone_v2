@@ -4,8 +4,6 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from os import getenv
 from sqlalchemy.orm import relationship
-from models.review import Review
-from models.amenity import Amenity
 import models
 
 place_amenity = Table("place_amenity", Base.metadata,
@@ -41,14 +39,14 @@ class Place(BaseModel, Base):
         def reviews(self):
             """returns the list of Review"""
             new_list = []
-            all_review = models.storage.all(Review)
+            all_review = models.storage.all('Review')
             for element in all_review.values():
                 if self.id == element.place_id:
                     new_list.append(element)
             return new_list
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        amenities = relationship("Amenity", viewonly=False, secondary=place_amenity, backref='place_amenities')
+        amenities = relationship("Amenity", viewonly=False, secondary=place_amenity, back_populates="place_amenities")
 
     else:
         @property
@@ -56,7 +54,7 @@ class Place(BaseModel, Base):
             """returns the list of amenities
             """
             new_list = []
-            all_ami = models.storage.all(Amenity)
+            all_ami = models.storage.all('Amenity')
             for element in all_ami.values():
                 if self.id == element.amenity_ids:
                     new_list.append(element)
