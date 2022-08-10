@@ -36,7 +36,7 @@ class DBStorage():
     def all(self, cls=None):
         """retrives all objects of a class name"""
         new_dict = {}
-        all_class = [City, State]
+        all_class = [City, State, User]
         list_objects = []
         if cls is None:
             for i in range(len(all_class)):
