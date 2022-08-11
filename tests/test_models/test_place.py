@@ -2,6 +2,7 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
+import pycodestyle
 
 
 class test_Place(test_basemodel):
@@ -12,6 +13,12 @@ class test_Place(test_basemodel):
         super().__init__(*args, **kwargs)
         self.name = "Place"
         self.value = Place
+
+    def test_class_style(self):
+        """Test that we conform to Pycodestyle."""
+        style = pycodestyle.StyleGuide(quiet=True)
+        result = style.check_files(['models/place.py'])
+        self.assertEqual(result.total_errors, 0)
 
     def test_city_id(self):
         """ """

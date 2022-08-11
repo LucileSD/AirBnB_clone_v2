@@ -2,10 +2,17 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.city import City
+import pycodestyle
 
 
 class test_City(test_basemodel):
     """ """
+
+    def test_class_style(self):
+        """Test that we conform to Pycodestyle."""
+        style = pycodestyle.StyleGuide(quiet=True)
+        result = style.check_files(['models/city.py'])
+        self.assertEqual(result.total_errors, 0)
 
     def __init__(self, *args, **kwargs):
         """ """

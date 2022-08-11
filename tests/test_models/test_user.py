@@ -2,6 +2,7 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.user import User
+import pycodestyle
 
 
 class test_User(test_basemodel):
@@ -12,6 +13,12 @@ class test_User(test_basemodel):
         super().__init__(*args, **kwargs)
         self.name = "User"
         self.value = User
+
+    def test_class_style(self):
+        """Test that we conform to Pycodestyle."""
+        style = pycodestyle.StyleGuide(quiet=True)
+        result = style.check_files(['models/user.py'])
+        self.assertEqual(result.total_errors, 0)
 
     def test_first_name(self):
         """ """
