@@ -63,5 +63,4 @@ class FileStorage:
             return
 
         else:
-            print(f"dans delete passe-ton par là ? objet:{obj.__class__.__name__}")
             del(FileStorage.__objects[f"{obj.__class__.__name__}.{obj.id}"])
