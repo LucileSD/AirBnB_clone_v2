@@ -61,6 +61,3 @@ class FileStorage:
         """function that deletes an object"""
         if obj:
             del(FileStorage.__objects[f"{obj.__class__.__name__}.{obj.id}"])
-
-        else:
-            pass
