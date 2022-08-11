@@ -9,7 +9,7 @@ from os import getenv
 
 Base = declarative_base()
 
-    
+
 class BaseModel:
     """A base class for all hbnb models"""
     id = Column(String(60), unique=True, primary_key=True, nullable=False)
@@ -67,7 +67,7 @@ class BaseModel:
         return dictionary
 
     def delete(self):
-        """to delete the current instance from the storage by 
+        """to delete the current instance from the storage by
             calling the method delete"""
         from models import storage
         storage.delete()

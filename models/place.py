@@ -16,10 +16,11 @@ place_amenity = Table("place_amenity", Base.metadata,
                              ForeignKey("amenities.id"),
                              nullable=False, primary_key=True))
 
+
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = 'places'
-    city_id = Column(String(60), ForeignKey('cities.id', ondelete="CASCADE"), 
+    city_id = Column(String(60), ForeignKey('cities.id', ondelete="CASCADE"),
                      nullable=False)
     user_id = Column(String(60), ForeignKey('users.id', ondelete="CASCADE"),
                      nullable=False)
@@ -34,7 +35,8 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship("Review", backref="place", cascade="all, delete", passive_deletes=True)
+        reviews = relationship("Review", backref="place",
+                               cascade="all, delete", passive_deletes=True)
 
     else:
         @property
@@ -48,7 +50,9 @@ class Place(BaseModel, Base):
             return new_list
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        amenities = relationship("Amenity", viewonly=False, secondary=place_amenity, backref="place_amenities")
+        amenities = relationship("Amenity", viewonly=False,
+                                 secondary=place_amenity,
+                                 backref="place_amenities")
 
     else:
         @property
@@ -61,7 +65,7 @@ class Place(BaseModel, Base):
                 if self.id == element.place_id:
                     new_list.append(element)
             return new_list
-            
+
         @amenities.setter
         def amenities(self, cls):
             if not isinstance(cls, Amenity):
