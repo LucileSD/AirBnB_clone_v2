@@ -6,10 +6,17 @@ import datetime
 from uuid import UUID
 import json
 import os
+import pycodestyle
 
 
 class test_basemodel(unittest.TestCase):
     """ """
+
+    def test_class_style(self):
+        """Test that we conform to Pycodestyle."""
+        style = pycodestyle.StyleGuide(quiet=True)
+        result = style.check_files(['models/base_model.py'])
+        self.assertEqual(result.total_errors, 0)
 
     def __init__(self, *args, **kwargs):
         """ """
