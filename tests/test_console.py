@@ -121,4 +121,3 @@ class TestBasicCaseAndDoc(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("fdfdf")
             self.assertEqual("*** Unknown syntax: fdfdf", f.getvalue().strip())
-
