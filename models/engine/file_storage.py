@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
+from imp import reload
 import json
 
 
@@ -60,3 +61,7 @@ class FileStorage:
         """function that deletes an object"""
         if obj:
             del(FileStorage.__objects[f"{obj.__class__.__name__}.{obj.id}"])
+
+    def close(self):
+        """ method for deserializing the JSON file to objects"""
+        self.reload()
