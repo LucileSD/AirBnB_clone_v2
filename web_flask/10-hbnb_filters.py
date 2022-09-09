@@ -21,9 +21,7 @@ def hbnb():
     """display a HTML page HBNB"""
     listState = storage.all(State).values()
     listAmenity = storage.all(Amenity).values()
-    return render_template("10-hbnb_filters.html",
-                           listState=listState,
-                           listAmenity=listAmenity)
+    return render_template("10-hbnb_filters.html", listState=listState, listAmenity=listAmenity)
 
 
 if __name__ == '__main__':
