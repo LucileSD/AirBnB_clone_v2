@@ -18,7 +18,7 @@ def removeSql(exception):
 @app.route("/states_list", strict_slashes=False)
 def listState():
     """list states in html page"""
-    list = storage.all(State).values()
+    list = sorted(list(storage.all("State").values()), key=lambda x: x.name)
     return render_template("7-states_list.html", list=list)
 
 
