@@ -46,7 +46,7 @@ class DBStorage():
             list_objects += self.__session.query(cls).all()
 
         for element in list_objects:
-            key = f"{element.__class__.__name__}.{element.id}"
+            key = "{}.{}".format(element.__class__.__name__, element.id)
             new_dict[key] = element
         return new_dict
 
