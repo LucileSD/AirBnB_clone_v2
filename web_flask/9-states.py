@@ -31,7 +31,7 @@ def listStateId(id):
         if (element.id == id):
             listState.append(element)
             return render_template("9-states.html", list=listState,
-                                   state=element, flag = 1)
+                                   state=element, flag=1)
     return render_template("9-states.html")
 
 
