@@ -5,13 +5,12 @@
 from flask import Flask, render_template
 from models import storage
 from models.state import State
-
 app = Flask(__name__)
 
 
 @app.teardown_appcontext
 def removeSql(exception):
-    """  remove the current SQLAlchemy Session"""
+    """remove the current SQLAlchemy Session"""
     storage.close()
 
 
