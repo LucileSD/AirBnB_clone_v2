@@ -15,13 +15,6 @@ def removeSql(exception):
     storage.close()
 
 
-@app.route("/states_list", strict_slashes=False)
-def listState():
-    """list states in html page"""
-    list = storage.all(State).values()
-    return render_template("7-states_list.html", list=list)
-
-
 @app.route("/cities_by_states", strict_slashes=False)
 def listCity():
     """list cities in a state"""
